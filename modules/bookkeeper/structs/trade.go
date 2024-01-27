@@ -17,6 +17,6 @@ type Trade struct {
 
 type TradeTransaction struct {
 	Model
-	TransactionID []ExternalID
+	TransactionID ExternalID
 	TradeID       ID
 }

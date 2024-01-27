@@ -62,9 +62,9 @@ func (ts TradeService) Create(ctx context.Context, data dto.CreateTrade) (struct
 
 	return ts.repo.Create(ctx, structs.Trade{
 		TradeTransactions: []structs.TradeTransaction{
-			{TradeID: sold.ID},
-			{TradeID: fee.ID},
-			{TradeID: purchased.ID},
+			{TransactionID: sold.ID},
+			{TransactionID: fee.ID},
+			{TransactionID: purchased.ID},
 		},
 		Fee:             data.Fee,
 		Rate:            data.Rate,
