@@ -23,6 +23,6 @@ func (a Account) CreditMultiplier() int {
 type AccountType string
 
 const (
-	DEBIT_NORMAL  AccountType = "DEBIT"
-	CREDIT_NORMAL AccountType = "CREDIT"
+	DEBIT_NORMAL  AccountType = "DEBIT_NORMAL"
+	CREDIT_NORMAL AccountType = "CREDIT_NORMAL"
 )

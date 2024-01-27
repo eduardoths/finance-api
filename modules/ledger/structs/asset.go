@@ -2,9 +2,9 @@ package structs
 
 type Asset struct {
 	Model
-	AssetType AssetType
-	AssetCode string
-	AssetName string
+	Type AssetType
+	Code string
+	Name string
 }
 
 type AssetType string

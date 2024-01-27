@@ -75,19 +75,19 @@ func initData(ctx context.Context, l ledger.Ledger) {
 
 	assets := []structs.Asset{
 		{
-			AssetType: structs.CURRENCY,
-			AssetCode: "BRL",
-			AssetName: "Real",
+			Type: structs.CURRENCY,
+			Code: "BRL",
+			Name: "Real",
 		},
 		{
-			AssetType: structs.CURRENCY,
-			AssetCode: "EUR",
-			AssetName: "Euro",
+			Type: structs.CURRENCY,
+			Code: "EUR",
+			Name: "Euro",
 		},
 		{
-			AssetType: structs.CURRENCY,
-			AssetCode: "USD",
-			AssetName: "Dollar",
+			Type: structs.CURRENCY,
+			Code: "USD",
+			Name: "Dollar",
 		},
 	}
 

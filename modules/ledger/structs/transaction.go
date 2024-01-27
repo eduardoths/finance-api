@@ -20,9 +20,3 @@ type Transaction struct {
 	AssetID ID
 }
 
-type TransactionType uint
-
-const (
-	DEBIT TransactionType = iota
-	CREDIT
-)
