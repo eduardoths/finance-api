@@ -1,0 +1,58 @@
+package structs
+
+type IncomeCategory uint
+
+const (
+	WAGE IncomeCategory = iota
+	BANK_TRANSFER
+	DONATION
+	BETS
+)
+
+type ExpenseCategory uint
+
+const (
+	PUBLIC_TRANSPORT ExpenseCategory = iota + 1
+	UBER
+	GYM
+	EATING_OUT
+	GROCERIES
+	ELECTRONICS
+	PHARMACY
+	SPORTS
+	HOME
+	CELLPHONE
+	SUPLEMENTS
+	RENT
+	LAUNDRY
+	SNACKS
+	TOURISM
+	CLOTHES
+	BUREAUCRACY
+	SOUVENIRS
+)
+
+type SubCategory uint
+
+const (
+	COOKIE SubCategory = iota + 1
+	YOGURT
+	MEAT
+	DAIRY
+	VEGETABLE
+	BREAD
+	EGG
+	POTATO
+	CANDY
+	FRUITS
+	SODA
+	BAG
+	SAUCE
+	SALAD
+	DISCOUNTS
+	SNACK
+	CEREAL
+	COOKIE_ACCOMPANIMENT
+	LAUNDRY_SC
+	CLEANING
+)
