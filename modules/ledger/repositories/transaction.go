@@ -6,6 +6,7 @@ import (
 	"github.com/eduardoths/finance-api/modules/ledger/dto"
 	"github.com/eduardoths/finance-api/modules/ledger/structs"
 	"github.com/eduardoths/finance-api/pkg/db"
+	"gorm.io/gorm/clause"
 )
 
 type TransactionRepository struct{}
@@ -22,6 +23,7 @@ func (ts TransactionRepository) New(ctx context.Context, t structs.Transaction) 
 func (ts TransactionRepository) Get(ctx context.Context, id structs.ID) (structs.Transaction, error) {
 	var transaction structs.Transaction
 	if err := db.GetFromContext(ctx).
+		Preload(clause.Associations).
 		Take(&transaction).
 		Error; err != nil {
 		return structs.Transaction{}, err
@@ -32,6 +34,7 @@ func (ts TransactionRepository) Get(ctx context.Context, id structs.ID) (structs
 func (ts TransactionRepository) GetMany(ctx context.Context, filter dto.TransactionFilter) ([]structs.Transaction, error) {
 	var transactions []structs.Transaction
 	if err := filter.PrepareConn(db.GetFromContext(ctx)).
+		Preload(clause.Associations).
 		Find(&transactions).Error; err != nil {
 		return nil, err
 	}

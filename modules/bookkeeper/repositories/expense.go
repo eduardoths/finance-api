@@ -21,3 +21,13 @@ func (er ExpenseRepository) Create(ctx context.Context, data structs.Expense) (s
 	}
 	return data, nil
 }
+
+func (er ExpenseRepository) GetAll(ctx context.Context) ([]structs.Expense, error) {
+	var data []structs.Expense
+	if err := db.GetFromContext(ctx).
+		Find(&data).
+		Error; err != nil {
+		return nil, err
+	}
+	return data, nil
+}

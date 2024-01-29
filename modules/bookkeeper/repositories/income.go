@@ -21,3 +21,12 @@ func (ir IncomeRepository) Create(ctx context.Context, data structs.Income) (str
 	}
 	return data, nil
 }
+func (ir IncomeRepository) GetAll(ctx context.Context) ([]structs.Income, error) {
+	var data []structs.Income
+	if err := db.GetFromContext(ctx).
+		Find(&data).
+		Error; err != nil {
+		return nil, err
+	}
+	return data, nil
+}

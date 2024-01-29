@@ -5,6 +5,7 @@ import (
 
 	"github.com/eduardoths/finance-api/modules/ledger/structs"
 	"github.com/eduardoths/finance-api/pkg/db"
+	"gorm.io/gorm/clause"
 )
 
 type AccountRepository struct {
@@ -22,6 +23,7 @@ func (ar AccountRepository) Create(ctx context.Context, data structs.Account) (s
 func (ar AccountRepository) Get(ctx context.Context, id structs.ID) (structs.Account, error) {
 	var data structs.Account
 	if err := db.GetFromContext(ctx).
+		Preload(clause.Associations).
 		Take(&data).
 		Error; err != nil {
 		return structs.Account{}, err

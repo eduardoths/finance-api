@@ -21,3 +21,13 @@ func (tr TradeRepository) Create(ctx context.Context, trade structs.Trade) (stru
 	}
 	return trade, nil
 }
+
+func (tr TradeRepository) GetAll(ctx context.Context) ([]structs.Trade, error) {
+	var data []structs.Trade
+	if err := db.GetFromContext(ctx).
+		Find(&data).
+		Error; err != nil {
+		return nil, err
+	}
+	return data, nil
+}

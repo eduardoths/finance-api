@@ -75,3 +75,27 @@ func (ts TradeService) Create(ctx context.Context, data dto.CreateTrade) (struct
 		PurchasedAsset:  data.PurchasedAsset,
 	})
 }
+
+func (ts TradeService) GetAll(ctx context.Context) ([]dto.ViewTrade, error) {
+	trades, err := ts.repo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	data := make([]dto.ViewTrade, 0)
+
+	for _, t := range trades {
+		fromAsset, err := ts.ledger.GetAsset(ctx, t.SoldAsset)
+		if err != nil {
+			return nil, err
+		}
+
+		toAsset, err := ts.ledger.GetAsset(ctx, t.PurchasedAsset)
+		if err != nil {
+			return nil, err
+		}
+
+		data = append(data, dto.NewViewTrade(t, fromAsset, toAsset))
+	}
+	return data, nil
+}

@@ -38,8 +38,19 @@ func (tc TradeController) Create(c *fiber.Ctx) error {
 	})
 }
 
+func (tc TradeController) GetAll(c *fiber.Ctx) error {
+	data, err := tc.service.GetAll(c.UserContext())
+	if err != nil {
+		return c.SendStatus(http.StatusInternalServerError)
+	}
+	return c.Status(http.StatusCreated).JSON(ihttp.Response[[]dto.ViewTrade]{
+		Data: data,
+	})
+}
+
 func (tc TradeController) Route(r fiber.Router) {
 	rg := r.Group("/trade")
 
 	rg.Post("/", tc.Create)
+	rg.Get("/", tc.GetAll)
 }

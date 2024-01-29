@@ -51,3 +51,21 @@ func (is IncomeService) Create(ctx context.Context, data dto.CreateIncome) (stru
 
 	return income, nil
 }
+
+func (is IncomeService) GetAll(ctx context.Context) ([]dto.ViewIncome, error) {
+	income, err := is.repo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	data := make([]dto.ViewIncome, 0)
+
+	for _, inc := range income {
+		tx, err := is.ledger.GetTransaction(ctx, inc.TransactionID)
+		if err != nil {
+			return nil, err
+		}
+		data = append(data, dto.NewViewIncome(inc, tx))
+	}
+	return data, nil
+}

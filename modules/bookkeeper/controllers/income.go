@@ -35,8 +35,19 @@ func (ec IncomeController) Create(c *fiber.Ctx) error {
 	})
 }
 
-func (ec IncomeController) Route(r fiber.Router) {
+func (ic IncomeController) GetAll(c *fiber.Ctx) error {
+	data, err := ic.service.GetAll(c.UserContext())
+	if err != nil {
+		return c.SendStatus(http.StatusInternalServerError)
+	}
+	return c.Status(http.StatusCreated).JSON(ihttp.Response[[]dto.ViewIncome]{
+		Data: data,
+	})
+}
+
+func (ic IncomeController) Route(r fiber.Router) {
 	rg := r.Group("/income")
 
-	rg.Post("/", ec.Create)
+	rg.Post("/", ic.Create)
+	rg.Get("/", ic.GetAll)
 }

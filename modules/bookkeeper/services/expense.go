@@ -51,3 +51,21 @@ func (es ExpenseService) Create(ctx context.Context, data dto.CreateExpense) (st
 
 	return expense, nil
 }
+
+func (es ExpenseService) GetAll(ctx context.Context) ([]dto.ViewExpense, error) {
+	expenses, err := es.repo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	data := make([]dto.ViewExpense, 0)
+
+	for _, exp := range expenses {
+		tx, err := es.ledger.GetTransaction(ctx, exp.TransactionID)
+		if err != nil {
+			return nil, err
+		}
+		data = append(data, dto.NewViewExpense(exp, tx))
+	}
+	return data, nil
+}

@@ -35,8 +35,19 @@ func (ec ExpenseController) Create(c *fiber.Ctx) error {
 	})
 }
 
+func (ec ExpenseController) GetAll(c *fiber.Ctx) error {
+	data, err := ec.service.GetAll(c.UserContext())
+	if err != nil {
+		return c.SendStatus(http.StatusInternalServerError)
+	}
+	return c.Status(http.StatusCreated).JSON(ihttp.Response[[]dto.ViewExpense]{
+		Data: data,
+	})
+}
+
 func (ec ExpenseController) Route(r fiber.Router) {
 	rg := r.Group("/expense")
 
 	rg.Post("/", ec.Create)
+	rg.Get("/", ec.GetAll)
 }

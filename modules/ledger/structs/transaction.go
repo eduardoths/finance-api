@@ -19,4 +19,3 @@ type Transaction struct {
 	Asset   Asset
 	AssetID ID
 }
-
