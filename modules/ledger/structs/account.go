@@ -2,8 +2,14 @@ package structs
 
 type Account struct {
 	Model
-	Name string
-	Type AccountType
+	Name    string           `json:"name"`
+	Type    AccountType      `json:"type"`
+	Balance []AccountBalance `json:"balance" gorm:"-"`
+}
+
+type AccountBalance struct {
+	Asset   Asset
+	Balance int
 }
 
 func (a Account) DebitMultiplier() int {

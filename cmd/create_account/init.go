@@ -45,12 +45,12 @@ func main() {
 	// 	CreditID:    1,
 	// })
 
-	b1, _ := l.Accounts.CalculateBalance(ctx, 1)
-	b2, _ := l.Accounts.CalculateBalance(ctx, 2)
-	b3, _ := l.Accounts.CalculateBalance(ctx, 3)
-	fmt.Println(b1)
-	fmt.Println(b2)
-	fmt.Println(b3)
+	b1, _ := l.Accounts.Get(ctx, 1)
+	b2, _ := l.Accounts.Get(ctx, 2)
+	b3, _ := l.Accounts.Get(ctx, 3)
+	fmt.Println(b1.Balance)
+	fmt.Println(b2.Balance)
+	fmt.Println(b3.Balance)
 }
 
 func initData(ctx context.Context, l ledger.Ledger) {

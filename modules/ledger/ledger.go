@@ -8,14 +8,17 @@ import (
 type Ledger struct {
 	Accounts     services.AccountService
 	Transactions services.TransactionService
+	Assets       services.AssetService
 }
 
 func NewLedger() Ledger {
 	accountRepo := repositories.AccountRepository{}
 	transactionRepo := repositories.TransactionRepository{}
 	transactionService := services.NewTransactionService(transactionRepo)
+	assetService := services.NewAssetService(repositories.AssetRepository{})
 	return Ledger{
 		Transactions: transactionService,
-		Accounts:     services.NewAccountService(accountRepo, transactionService),
+		Accounts:     services.NewAccountService(accountRepo, transactionService, assetService),
+		Assets:       assetService,
 	}
 }

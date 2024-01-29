@@ -11,12 +11,14 @@ import (
 type AccountService struct {
 	repo               repositories.AccountRepository
 	transactionService TransactionService
+	assetService       AssetService
 }
 
-func NewAccountService(repo repositories.AccountRepository, ts TransactionService) AccountService {
+func NewAccountService(repo repositories.AccountRepository, ts TransactionService, as AssetService) AccountService {
 	return AccountService{
 		repo:               repo,
 		transactionService: ts,
+		assetService:       as,
 	}
 }
 
@@ -25,10 +27,19 @@ func (as AccountService) Create(ctx context.Context, data dto.NewAccount) (struc
 }
 
 func (as AccountService) Get(ctx context.Context, id structs.ID) (structs.Account, error) {
-	return as.repo.Get(ctx, id)
+	account, err := as.repo.Get(ctx, id)
+	if err != nil {
+		return structs.Account{}, err
+	}
+	balance, err := as.calculateBalance(ctx, id)
+	if err != nil {
+		return structs.Account{}, err
+	}
+	account.Balance = balance
+	return account, nil
 }
 
-func (as AccountService) CalculateBalance(ctx context.Context, accountID structs.ID) (map[structs.ID]int, error) {
+func (as AccountService) calculateBalance(ctx context.Context, accountID structs.ID) ([]structs.AccountBalance, error) {
 	account, err := as.repo.Get(ctx, accountID)
 	if err != nil {
 		return nil, err
@@ -41,13 +52,25 @@ func (as AccountService) CalculateBalance(ctx context.Context, accountID structs
 		return nil, err
 	}
 
-	balance := make(map[structs.ID]int)
+	balanceMap := make(map[structs.ID]int)
 	for _, t := range ts {
 		if t.DebitID == accountID {
-			balance[t.AssetID] += int(t.Amount) * account.DebitMultiplier()
+			balanceMap[t.AssetID] += int(t.Amount) * account.DebitMultiplier()
 		} else {
-			balance[t.AssetID] += int(t.Amount) * account.CreditMultiplier()
+			balanceMap[t.AssetID] += int(t.Amount) * account.CreditMultiplier()
 		}
+	}
+
+	balance := make([]structs.AccountBalance, 0)
+	for k, v := range balanceMap {
+		asset, err := as.assetService.Get(ctx, k)
+		if err != nil {
+			continue
+		}
+		balance = append(balance, structs.AccountBalance{
+			Balance: v,
+			Asset:   asset,
+		})
 	}
 
 	return balance, nil
