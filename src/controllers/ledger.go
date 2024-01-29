@@ -16,5 +16,8 @@ func NewLedgerController() LedgerController {
 }
 
 func (lc LedgerController) Route(r fiber.Router) {
-	r.Group("/ledger")
+	rg := r.Group("/ledger")
+	for _, c := range lc.ledger.Controllers {
+		c.Route(rg)
+	}
 }

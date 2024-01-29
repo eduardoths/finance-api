@@ -40,3 +40,14 @@ func (ts TransactionRepository) GetMany(ctx context.Context, filter dto.Transact
 	}
 	return transactions, nil
 }
+
+func (tr TransactionRepository) GetAll(ctx context.Context) ([]structs.Transaction, error) {
+	var data []structs.Transaction
+	if err := db.GetFromContext(ctx).
+		Preload(clause.Associations).
+		Find(&data).
+		Error; err != nil {
+		return nil, err
+	}
+	return data, nil
+}

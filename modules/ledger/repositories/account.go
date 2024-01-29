@@ -30,3 +30,14 @@ func (ar AccountRepository) Get(ctx context.Context, id structs.ID) (structs.Acc
 	}
 	return data, nil
 }
+
+func (ar AccountRepository) GetAll(ctx context.Context) ([]structs.Account, error) {
+	var data []structs.Account
+	if err := db.GetFromContext(ctx).
+		Preload(clause.Associations).
+		Find(&data).
+		Error; err != nil {
+		return nil, err
+	}
+	return data, nil
+}

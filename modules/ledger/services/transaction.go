@@ -59,3 +59,7 @@ func (ts TransactionService) Undo(ctx context.Context, id structs.ID) (structs.T
 func (ts TransactionService) GetMany(ctx context.Context, filter dto.TransactionFilter) ([]structs.Transaction, error) {
 	return ts.repo.GetMany(ctx, filter)
 }
+
+func (as TransactionService) GetAll(ctx context.Context) ([]structs.Transaction, error) {
+	return as.repo.GetAll(ctx)
+}

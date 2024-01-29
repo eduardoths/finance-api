@@ -30,3 +30,14 @@ func (ar AssetRepository) Get(ctx context.Context, id structs.ID) (structs.Asset
 	}
 	return data, nil
 }
+
+func (ar AssetRepository) GetAll(ctx context.Context) ([]structs.Asset, error) {
+	var data []structs.Asset
+	if err := db.GetFromContext(ctx).
+		Preload(clause.Associations).
+		Find(&data).
+		Error; err != nil {
+		return nil, err
+	}
+	return data, nil
+}

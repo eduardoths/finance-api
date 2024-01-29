@@ -22,6 +22,10 @@ func NewAccountService(repo repositories.AccountRepository, ts TransactionServic
 	}
 }
 
+func (as AccountService) GetAll(ctx context.Context) ([]structs.Account, error) {
+	return as.repo.GetAll(ctx)
+}
+
 func (as AccountService) Create(ctx context.Context, data dto.NewAccount) (structs.Account, error) {
 	return as.repo.Create(ctx, structs.Account{Name: data.Name, Type: data.Type})
 }

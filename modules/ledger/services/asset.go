@@ -24,3 +24,7 @@ func (as AssetService) Create(ctx context.Context, data structs.Asset) (structs.
 func (as AssetService) Get(ctx context.Context, id structs.ID) (structs.Asset, error) {
 	return as.repo.Get(ctx, id)
 }
+
+func (as AssetService) GetAll(ctx context.Context) ([]structs.Asset, error) {
+	return as.repo.GetAll(ctx)
+}
